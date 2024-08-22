@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:task_management_app/ui/home.dart';
-import 'package:task_management_app/ui/login.dart';
-import 'package:task_management_app/ui/register.dart';
+import 'package:TaskMaster/ui/home.dart';
+import 'package:TaskMaster/ui/login.dart';
+import 'package:TaskMaster/ui/register.dart';
 
 void main() {
   runApp(const Welcome());

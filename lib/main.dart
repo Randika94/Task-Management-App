@@ -1,6 +1,5 @@
+import 'package:TaskMaster/ui/home.dart';
 import 'package:flutter/material.dart';
-import 'package:task_management_app/ui/login.dart';
-import 'package:task_management_app/welcome.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'R Task Management App',
+      title: 'TaskMaster',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -27,7 +26,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const Welcome(),
+      home: const Home(),
     );
   }
 }

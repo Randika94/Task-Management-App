@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:task_management_app/ui/register.dart';
-import 'package:task_management_app/welcome.dart';
-import 'package:task_management_app/ui/home.dart';
+import 'package:TaskMaster/ui/register.dart';
+import 'package:TaskMaster/welcome.dart';
+import 'package:TaskMaster/ui/home.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

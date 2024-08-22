@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
-import 'package:task_management_app/welcome.dart';
+import 'package:TaskMaster/welcome.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomeState createState() => _HomeState();
 }
 
@@ -24,6 +25,10 @@ class _HomeState extends State<Home> {
   bool hasTasksForSelectedDate = false;
   DateTime selectedDate = DateTime.now();
 
+  bool checkForTasks(DateTime date) {
+    return date.day == DateTime.now().day;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +39,7 @@ class _HomeState extends State<Home> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +52,14 @@ class _HomeState extends State<Home> {
         constraints: const BoxConstraints.expand(),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFF012087),
-              Color(0xFF00CCFF),
-            ],
-            begin: FractionalOffset(0.0, 0.0),
-            end: FractionalOffset(1.0, 0.0),
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
+              colors: [
+                const Color(0xFF012087),
+                const Color(0xFF00CCFF),
+              ],
+              begin: const FractionalOffset(0.0, 0.0),
+              end: const FractionalOffset(1.0, 0.0),
+              stops: [0.0, 1.0],
+              tileMode: TileMode.clamp
           ),
         ),
         child: Stack(
@@ -61,35 +67,25 @@ class _HomeState extends State<Home> {
             Positioned(
               top: size.height * 0.05,
               left: 20,
+              right: 20,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(
-                    width: size.width/2,
-                    child: Text(
-                      "TaskMaster",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontFamily: 'DM Sans',
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1.0,
-                        decoration: TextDecoration.none,
-                      ),
+                  const Text(
+                    "TaskMaster",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontFamily: 'DM Sans',
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.0,
+                      decoration: TextDecoration.none,
                     ),
                   ),
-                  Container(
-                    width: 200,
-                    padding: EdgeInsets.fromLTRB(100, 00, 40, 00),
-                    child: FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.blueAccent,
-                        weight: 600,
-                        size: 30.0,
-                      ),
+                  const Expanded(child: SizedBox()),
+                  SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: ElevatedButton(
                       onPressed: () {
                         Navigator.pushAndRemoveUntil(
                           context,
@@ -97,6 +93,19 @@ class _HomeState extends State<Home> {
                               (route) => false,
                         );
                       },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        padding: EdgeInsets.zero,
+                        backgroundColor: Colors.white,
+                      ),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.blueAccent,
+                        weight: 600,
+                        size: 30.0,
+                      )
                     ),
                   ),
                 ],
@@ -159,7 +168,6 @@ class _HomeState extends State<Home> {
                           child: InkWell(
                             onTap: () {
                               setState(() {
-                                // Check if there are tasks for the selected date
                                 hasTasksForSelectedDate = checkForTasks(day);
                                 print(hasTasksForSelectedDate);
                               });
@@ -206,6 +214,7 @@ class _HomeState extends State<Home> {
                             ),
                           ),
                         ),
+
                     ],
                   ),
                 ),
@@ -213,6 +222,7 @@ class _HomeState extends State<Home> {
             ),
             Positioned(
               top: size.height * 0.30,
+              bottom: 0,
               left: 0,
               right: 0,
               child: Container(
@@ -226,474 +236,467 @@ class _HomeState extends State<Home> {
                     topRight: Radius.circular(40.0),
                   ),
                 ),
-                child: hasTasksForSelectedDate ?
+                child: (hasTasksForSelectedDate) ?
                 SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  physics: const ScrollPhysics(),
                   child: Column(
                     children: <Widget>[
-                      taskCard(size),
-                      // You can add more task cards here
+                      Stack(
+                        children: <Widget>[
+                          Container(
+                            width: size.width,
+                            height: size.height*0.15,
+                            margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blueAccent),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const <Widget>[
+                                Text(
+                                  'Complete Project Report',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: 'DM Sans',
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Finalize and submit the project report for the client review.',
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontFamily: 'DM Sans',
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: 20,
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: Transform.translate(
+                                offset: const Offset(0, 5.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '10.00 AM',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 20,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  width: 35.0,
+                                  height: 35.0,
+                                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Colors.black,
+                                    size: 20.0,
+                                  ),
+                                ),
+                                Container(
+                                  width: 35.0,
+                                  height: 35.0,
+                                  margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Colors.black,
+                                    size: 20.0,
+                                    semanticLabel: 'Text to announce in accessibility modes',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Stack(
+                        children: <Widget>[
+                          Container(
+                            width: size.width,
+                            height: size.height*0.15,
+                            margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blueAccent),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const <Widget>[
+                                Text(
+                                  'Schedule Team Meeting',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: 'DM Sans',
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Arrange a meeting with the development team to discuss the upcoming sprint.',
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontFamily: 'DM Sans',
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: 20,
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: Transform.translate(
+                                offset: const Offset(0, -14.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '10.45 AM',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 20,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  width: 35.0,
+                                  height: 35.0,
+                                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Colors.black,
+                                    size: 20.0,
+                                  ),
+                                ),
+                                Container(
+                                  width: 35.0,
+                                  height: 35.0,
+                                  margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Colors.black,
+                                    size: 20.0,
+                                    semanticLabel: 'Text to announce in accessibility modes',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Stack(
+                        children: <Widget>[
+                          Container(
+                            width: size.width,
+                            height: size.height*0.15,
+                            margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blueAccent),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const <Widget>[
+                                Text(
+                                  'Update Software Documentation',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: 'DM Sans',
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Review and update the software documentation to reflect the latest changes in the codebase.',
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontFamily: 'DM Sans',
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: 20,
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: Transform.translate(
+                                offset: const Offset(0, -14.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '11.15 AM',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 20,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  width: 35.0,
+                                  height: 35.0,
+                                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Colors.black,
+                                    size: 20.0,
+                                  ),
+                                ),
+                                Container(
+                                  width: 35.0,
+                                  height: 35.0,
+                                  margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Colors.black,
+                                    size: 20.0,
+                                    semanticLabel: 'Text to announce in accessibility modes',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Stack(
+                        children: <Widget>[
+                          Container(
+                            width: size.width,
+                            height: size.height*0.15,
+                            margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blueAccent),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const <Widget>[
+                                Text(
+                                  'Review Marketing Strategy',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: 'DM Sans',
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Assess the current marketing strategy for the new product launch.',
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontFamily: 'DM Sans',
+                                    fontWeight: FontWeight.w400,
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            right: 20,
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: Transform.translate(
+                                offset: const Offset(0, -14.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '12.00 PM',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 20,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  width: 35.0,
+                                  height: 35.0,
+                                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Colors.black,
+                                    size: 20.0,
+                                  ),
+                                ),
+                                Container(
+                                  width: 35.0,
+                                  height: 35.0,
+                                  margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Colors.black,
+                                    size: 20.0,
+                                    semanticLabel: 'Text to announce in accessibility modes',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 )
                 :
-                Container(),
-              ),
-            ),
-            if (!hasTasksForSelectedDate)
-              Align(
-                alignment: Alignment.center,
-                child: IconButton(
-                  iconSize: 100,
-                  icon: const Icon(
-                    Icons.add_circle_outline,
-                    color: Colors.black26,
-                  ),
-                  onPressed: () {
-                    // Action to add new task
-                  },
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Function to check if there are tasks for the selected date
-  bool checkForTasks(DateTime date) {
-    // You can replace this with your logic to check if there are tasks for the selected date
-    // For now, this just returns true for example purposes
-    return date.day == DateTime.now().day; // Example: tasks only for today
-  }
-
-  // Widget for the task card
-  Widget taskCard(Size size) {
-    return Column(
-      children: <Widget>[
-        Stack(
-          children: <Widget>[
-            Container(
-              width: size.width,
-              height: size.height*0.15,
-              margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.black12.withOpacity(0.55),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const <Widget>[
-                  Text(
-                    'Complete Project Report',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Finalize and submit the project report for the client review.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 0,
-              right: 20,
-              child: Container(
-                width: 100.0,
-                height: 40.0,
-                padding: const EdgeInsets.all(8.0),
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(12.0),
-                  ),
-                ),
-                child: const Center(
-                  child: Text(
-                    '10.00 AM',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0
+                Container(
+                  child:  Align(
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      iconSize: 100,
+                      icon: const Icon(
+                        Icons.add_circle_outline,
+                        color: Colors.black26,
+                      ),
+                      onPressed: () {
+                        // Action to add new task
+                      },
                     ),
                   ),
                 ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: 35.0,
-                    height: 35.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 20.0,
-                    ),
-                  ),
-                  Container(
-                    width: 35.0,
-                    height: 35.0,
-                    margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                      size: 20.0,
-                      semanticLabel: 'Text to announce in accessibility modes',
-                    ),
-                  ),
-                ],
               ),
             ),
           ],
         ),
-        const SizedBox(height: 20),
-        Stack(
-          children: <Widget>[
-            Container(
-              width: size.width,
-              height: size.height*0.15,
-              margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.black12.withOpacity(0.55),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const <Widget>[
-                  Text(
-                    'Schedule Team Meeting',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Arrange a meeting with the development team to discuss the upcoming sprint.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 0,
-              right: 20,
-              child: Container(
-                width: 100.0,
-                height: 40.0,
-                padding: const EdgeInsets.all(8.0),
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(12.0),
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    '10.45 AM',
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: 35.0,
-                    height: 35.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 20.0,
-                    ),
-                  ),
-                  Container(
-                    width: 35.0,
-                    height: 35.0,
-                    margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                      size: 20.0,
-                      semanticLabel: 'Text to announce in accessibility modes',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-        Stack(
-          children: <Widget>[
-            Container(
-              width: size.width,
-              height: size.height*0.15,
-              margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.black12.withOpacity(0.55),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const <Widget>[
-                  Text(
-                    'Update Software Documentation',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Review and update the software documentation to reflect the latest changes in the codebase.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 0,
-              right: 20,
-              child: Container(
-                width: 100.0,
-                height: 40.0,
-                padding: const EdgeInsets.all(8.0),
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(12.0),
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    '11.15 AM',
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: 35.0,
-                    height: 35.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 20.0,
-                    ),
-                  ),
-                  Container(
-                    width: 35.0,
-                    height: 35.0,
-                    margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                      size: 20.0,
-                      semanticLabel: 'Text to announce in accessibility modes',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-        Stack(
-          children: <Widget>[
-            Container(
-              width: size.width,
-              height: size.height*0.15,
-              margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.black12.withOpacity(0.55),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const <Widget>[
-                  Text(
-                    'Review Marketing Strategy',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Assess the current marketing strategy for the new product launch.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontFamily: 'DM Sans',
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 0,
-              right: 20,
-              child: Container(
-                width: 100.0,
-                height: 40.0,
-                padding: const EdgeInsets.all(8.0),
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(12.0),
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    '12.00 PM',
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    width: 35.0,
-                    height: 35.0,
-                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 20.0,
-                    ),
-                  ),
-                  Container(
-                    width: 35.0,
-                    height: 35.0,
-                    margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                      size: 20.0,
-                      semanticLabel: 'Text to announce in accessibility modes',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_management_app/ui/home.dart';
-import 'package:task_management_app/welcome.dart';
+import 'package:TaskMaster/ui/home.dart';
+import 'package:TaskMaster/welcome.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -21,47 +21,31 @@ class _RegisterState extends State<Register> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(25.0),
-        child: AppBar(
-          backgroundColor: Colors.black,
-          flexibleSpace: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 20.0),
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: FloatingActionButton(
-                  backgroundColor: Colors.transparent,
-                  child: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    weight: 600,
-                    size: 30.0,
-                  ),
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => Welcome()),
-                          (route) => false,
-                    );
-                  },
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 20.0),
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                  'Register',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Register',
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
+        ),
+        leading: FloatingActionButton(
+          backgroundColor: Colors.transparent,
+          child: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+            weight: 600,
+            size: 30.0,
+          ),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => Welcome()),
+                  (route) => false,
+            );
+          },
         ),
       ),
       body: Center(
