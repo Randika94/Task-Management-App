@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_management_app/ui/home.dart';
+import 'package:task_management_app/ui/login.dart';
 import 'package:task_management_app/ui/register.dart';
 
 void main() {
@@ -85,7 +86,7 @@ class Body extends StatelessWidget {
             height: 60.0,
             width: 350.0,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(20.0),
               color: Colors.blueAccent,
             ),
             child: Material(
@@ -94,13 +95,13 @@ class Body extends StatelessWidget {
                 onTap: () {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => Register()),
+                    MaterialPageRoute(builder: (context) => Login()),
                         (route) => false,
                   );
                 },
                 child: Center(
                   child: Text(
-                    'Create Account',
+                    'Login',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 17,
@@ -125,7 +126,7 @@ class Body extends StatelessWidget {
             height: 60.0,
             width: 350.0,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.0),
+              borderRadius: BorderRadius.circular(20.0),
               color: Colors.blueAccent,
             ),
             child: Material(
@@ -134,13 +135,13 @@ class Body extends StatelessWidget {
                 onTap: () {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => Home()),
+                    MaterialPageRoute(builder: (context) => Register()),
                         (route) => false,
                   );
                 },
                 child: Center(
                   child: Text(
-                    'I have an Account',
+                    'Register',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 17,

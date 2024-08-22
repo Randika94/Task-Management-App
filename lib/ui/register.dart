@@ -76,7 +76,9 @@ class _RegisterState extends State<Register> {
                   controller: _nameController,
                   decoration: const InputDecoration(
                     labelText: 'Name',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -90,7 +92,9 @@ class _RegisterState extends State<Register> {
                   controller: _emailController,
                   decoration: const InputDecoration(
                     labelText: 'Email',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -107,7 +111,9 @@ class _RegisterState extends State<Register> {
                   controller: _passwordController,
                   decoration: const InputDecoration(
                     labelText: 'Password',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    ),
                   ),
                   obscureText: true,
                   validator: (value) {
@@ -125,7 +131,9 @@ class _RegisterState extends State<Register> {
                   controller: _confirmPasswordController,
                   decoration: const InputDecoration(
                     labelText: 'Confirm Password',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    ),
                   ),
                   obscureText: true,
                   validator: (value) {
@@ -146,7 +154,7 @@ class _RegisterState extends State<Register> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+                          borderRadius: BorderRadius.circular(20.0),
                         ),
                         backgroundColor: Colors.blueAccent, // Optional: Customize the button color
                       ),
