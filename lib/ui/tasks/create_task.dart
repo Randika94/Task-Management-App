@@ -2,29 +2,44 @@ import 'package:TaskMaster/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:TaskMaster/repository/task_repository.dart';
+import 'package:TaskMaster/service/task_service.dart';
 
-
-class CreateTask extends StatefulWidget {
-  const CreateTask({super.key});
-
+class CreateTask extends StatelessWidget {
   @override
-  _CreateTaskState createState() => _CreateTaskState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xFF33138C),
+      body: BlocProvider(
+        create: (context) => TaskRepository(TaskService()),
+        child: CreateTaskBody(),
+      ),
+    );
+  }
 }
 
-class _CreateTaskState extends State<CreateTask> {
+class CreateTaskBody extends StatefulWidget {
+  const CreateTaskBody({super.key});
+
+  @override
+  _CreateTaskBodyState createState() => _CreateTaskBodyState();
+}
+
+class _CreateTaskBodyState extends State<CreateTaskBody> {
   final _formKey = GlobalKey<FormState>();
   DateTime selectedDateTime = DateTime.now();
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController _timeController = TextEditingController();
-  TextEditingController _labelController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _date = TextEditingController();
+  TextEditingController _time = TextEditingController();
+  TextEditingController _label = TextEditingController();
+  TextEditingController _description = TextEditingController();
 
 
   @override
   void initState() {
     super.initState();
-    _dateController.text = formatDate(selectedDateTime);
-    _timeController.text = formatTime(selectedDateTime);
+    _date.text = formatDate(selectedDateTime);
+    _time.text = formatTime(selectedDateTime);
   }
 
   String formatDate(DateTime date) {
@@ -43,7 +58,7 @@ class _CreateTaskState extends State<CreateTask> {
           onDateTimeChanged: (DateTime newDate) {
             setState(() {
               selectedDateTime = newDate;
-              _dateController.text = formatDate(selectedDateTime);
+              _date.text = formatDate(selectedDateTime);
             });
           },
         ),
@@ -68,7 +83,7 @@ class _CreateTaskState extends State<CreateTask> {
           onDateTimeChanged: (DateTime newTime) {
             setState(() {
               selectedDateTime = newTime;
-              _timeController.text = formatTime(selectedDateTime);
+              _time.text = formatTime(selectedDateTime);
             });
           },
         ),
@@ -119,7 +134,7 @@ class _CreateTaskState extends State<CreateTask> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     TextFormField(
-                      controller: _dateController,
+                      controller: _date,
                       readOnly: true, // Prevent manual input
                       decoration: InputDecoration(
                         labelText: 'Select Date',
@@ -133,7 +148,7 @@ class _CreateTaskState extends State<CreateTask> {
                     SizedBox(height: 20),
                     // TextFormField for Time Picker
                     TextFormField(
-                      controller: _timeController,
+                      controller: _time,
                       readOnly: true, // Prevent manual input
                       decoration: InputDecoration(
                         labelText: 'Select Time',
@@ -146,7 +161,7 @@ class _CreateTaskState extends State<CreateTask> {
                     ),
                     SizedBox(height: 20,),
                     TextFormField(
-                      controller: _labelController,
+                      controller: _label,
                       decoration: const InputDecoration(
                         labelText: 'Label',
                         hintText: 'Enter your task heading',
@@ -161,7 +176,7 @@ class _CreateTaskState extends State<CreateTask> {
                     ),
                     SizedBox(height: 20,),
                     TextFormField(
-                      controller: _descriptionController,
+                      controller: _description,
                       decoration: const InputDecoration(
                         labelText: 'Description',
                         hintText: 'Enter your task description',
@@ -212,6 +227,15 @@ class _CreateTaskState extends State<CreateTask> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
+                          final taskEvent = CreateNewTask(
+                            _date.text,
+                            _time.text,
+                            _label.text,
+                            _description.text,
+                          );
+
+                          BlocProvider.of<TaskRepository>(context).add(taskEvent);
+
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: const Text(
                               'Registered Successfully!',
