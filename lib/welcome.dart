@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:TaskMaster/ui/home.dart';
 import 'package:TaskMaster/ui/login.dart';
 import 'package:TaskMaster/ui/register.dart';
 

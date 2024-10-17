@@ -1,7 +1,9 @@
+import 'package:TaskMaster/ui/tasks/create_task.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
-import 'package:TaskMaster/welcome.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -24,6 +26,7 @@ class _HomeState extends State<Home> {
 
   bool hasTasksForSelectedDate = false;
   DateTime selectedDate = DateTime.now();
+  String currentDate = DateFormat('d MMMM, yyyy').format(DateTime.now());
 
   bool checkForTasks(DateTime date) {
     return date.day == DateTime.now().day;
@@ -40,12 +43,34 @@ class _HomeState extends State<Home> {
     }
   }
 
+  void _showDatePicker(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: 250,
+        color: CupertinoColors.systemBackground,
+        child: CupertinoDatePicker(
+          mode: CupertinoDatePickerMode.date,
+          initialDateTime: selectedDate,
+          onDateTimeChanged: (DateTime newDate) {
+            setState(() {
+              selectedDate = newDate;
+              currentDate = DateFormat('d MMMM, yyyy').format(selectedDate);
+              if (newDate.day == DateTime.now().day) {
+                  hasTasksForSelectedDate = checkForTasks(selectedDate);
+              }
+            });
+          },
+        ),
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     List<DateTime> days = getNext7Days();
-    String currentDate = DateFormat('E,d MMMM').format(DateTime.now());
 
     return Scaffold(
       body: Container(
@@ -89,7 +114,7 @@ class _HomeState extends State<Home> {
                       onPressed: () {
                         Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => Welcome()),
+                          MaterialPageRoute(builder: (context) => CreateTask()),
                               (route) => false,
                         );
                       },
@@ -114,40 +139,28 @@ class _HomeState extends State<Home> {
             Positioned(
               top: size.height * 0.15,
               left: 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  SizedBox(
-                    width: size.width/2,
-                    child: Text(
-                      days[0].day == DateTime.now().day ? "Today" : DateFormat('EEEE').format(DateTime.now().day as DateTime),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontFamily: 'DM Sans',
-                        fontWeight: FontWeight.normal,
-                        letterSpacing: 1.0,
-                        decoration: TextDecoration.none,
-                      ),
+              child: Container(
+                width: size.width,
+                padding: EdgeInsets.fromLTRB(00, 00, 40, 00),
+                alignment: Alignment.centerRight,
+                child: RichText(
+                  text:  TextSpan(
+                    text: currentDate,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontFamily: 'DM Sans',
+                      fontWeight: FontWeight.normal,
+                      letterSpacing: 1.0,
+                      decoration: TextDecoration.none,
                     ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        _showDatePicker(context);
+                        print('DatePicker');
+                      },
                   ),
-                  Container(
-                    width: size.width/2,
-                    padding: EdgeInsets.fromLTRB(00, 00, 40, 00),
-                    child: Text(
-                      currentDate,
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontFamily: 'DM Sans',
-                        fontWeight: FontWeight.normal,
-                        letterSpacing: 1.0,
-                        decoration: TextDecoration.none,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
             Positioned(
